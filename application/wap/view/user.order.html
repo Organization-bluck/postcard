@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	{include file="/common/top" /}
+	<style>
+		.card-box{box-shadow: 0 16px 24px 1px rgba(0,0,0,.14), 0 6px 50px 1px rgba(0,0,0,.12), 0 6px 10px -5px rgba(0,0,0,.2);border-radius: 10px;padding-bottom: 1rem;}
+		.card-box img{width: 6.4rem;margin: auto;display: block; height: 3.85rem;position: relative;top: -.5rem;}
+		.card-info{width: 6.4rem;margin: auto;}
+		.card-info .info-item{width: 33.33%;text-align: center;color: #1c84c6}
+		.card-info .info-item h4{font-weight: bold;font-size: 20px;}
+		.card-info .info-item p{font-size: 16px;margin-top: .4rem;line-height: 10px;}
+		.buy-btn{width: 3rem;height: 1rem;line-height: 1rem;border:1px solid #06bd03;text-align: center;margin: 1rem auto 0;border-radius:5px;color: #06bd03;}
+		/*login*/
+		.login-input{padding: .5rem;}
+		.input-item{border-bottom: 1px solid rgba(0,0,0,0.12);padding: 8px 0;position: relative;}
+		.input-item label{width: 30px;display: inline-block;margin-left: 2px;}
+		.input-item label i.icons{display: inline-block;vertical-align: middle;width: 24px;height: 24px;background-repeat: no-repeat;background-position: center center;}
+		.input-item input{width: 50%;height: 24px;line-height: 24px;border: 0;outline: none;}
+		.input-item label i.user-icon{background-image: url(__HOME_STATIC__/img/user-icon.png);background-size: cover;}
+		.input-item label i.pwd-icon{background-image: url(__HOME_STATIC__/img/pwd-icon.png);background-size: 80%;}
+		.input-item label i.phone-icon{background-image: url(__HOME_STATIC__/img/phone-icon.png);background-size: 75%;}
+		.input-item label i.yzm-icon{background-image: url(__HOME_STATIC__/img/yzm-icon.png);background-size: 80%;}
+		.input-item .error-text{display: none; font-size: 10px;color: #D0011B;position: absolute;top: 12px;right: 10px;}
+		.input-item .error-text.yzm-error{right: 110px;}
+		.login-btn{margin: 25px 0;}
+		.login-btn>a{display: block;width: 100%;height: 44px;line-height: 44px;color: #fff;background-color: #c8c8c8;font-size: 20px;text-align: center;border-radius: 2px;
+			box-shadow: 0 2px 4px 0 #C8C8C8;}
+		.login-btn>a.canAble{background-color: #06bd03;}
+		.login-foot a{font-size: 10px;color: #FF5A5F;}
+		.yzm-btn{float: right;margin-top: -5px; width: 100px;height: 32px;line-height: 32px;text-align: center;  background-color: rgba(59,66,76,0.60);box-shadow: 0 2px 4px 0 #C8C8C8;border-radius: 2px;color: #fff;}
+		.yzm-btn.gray{background-color: #c8c8c8;}
+	</style>
+</head>
+
+<body class="fadeIn animated" style="padding-bottom: 1.2rem">
+{include file="/common/header" /}
+{include file="/common/left" /}
+<article class="w75 o-h f36">
+	<section class="userbox p2 mt10 clearfix">
+		{if !empty($order_list)}
+			{volist name='order_list' id='card_info'}
+				<div class="card-box">
+					<img src="__HOME_STATIC__img/card.png" alt="{$card_info.title}">
+					<div class="card-info clearfix">
+						<div class="fl info-item">
+							<h4>总次数</h4>
+							<p style="color: black">{if condition="$card_info.times egt 0"}不限{else/}{$card_info.times}{/if}</p>
+						</div>
+						<div class="fl info-item">
+							<h4>使用次数</h4>
+							<p style="color: black">{if condition="$card_info.times egt 0"}不限{else/}{$card_info.use_times}{/if}</p>
+						</div>
+						<div class="fl info-item">
+							<h4>时长</h4>
+							<p style="color: black">{$card_info.time_long}{$time_type[$card_info.time_type]}</p>
+						</div>
+					</div>
+					<input type="hidden" name="card_id" value="{$card_info.id}">
+				</div>
+			{/volist}
+		{/if}
+
+	</section>
+</article>
+
+<script>
+    //底部
+    var asideBottom = $(".asideBottom").asideUi({
+        size: "5rem",
+        position: "bottom",
+    });
+    $(".btnBottom").tap(function(event) {
+        asideBottom.toggle();
+        event.preventDefault();
+    });
+
+</script>
+
+</body>
+</html>

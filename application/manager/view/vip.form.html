@@ -1,0 +1,75 @@
+<form class="layui-form layui-box" style='width:80%;height: 600px;padding:25px 30px 20px 0;' action="__SELF__" data-auto="true" method="post">
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">会员卡名称</label>
+        <div class="layui-input-block">
+            <input type="text" name="title" value='{$vo.title|default=""}' required="required" title="请输入会员卡名称" placeholder="请输入会员卡名称" class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">会员卡背景</label>
+        <div class="layui-input-block">
+            <div style="position:relative">
+                {if isset($vo['img_path'])}
+                <div class="uploadimage" style='background-image:url("{$vo['img_path']}");background-repeat:no-repeat'><input type="hidden" name="img_path" value="{$vo['img_path']}"></div>
+            {else /}
+            <div class="uploadimage"><input type="hidden" name="img_path"></div>
+            {/if}
+            <a data-file="one" data-field="img_path" data-type="png,jpg,jpeg" data-uptype="local" href="javascript:void(0)" class="uploadbutton">上传图片</a>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">会员卡售价</label>
+        <div class="layui-input-block">
+            <input type="number" name="price" min=1 value='{$vo.price|default=0}' required="required" title="请输入金额" placeholder="请输入金额" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">折扣(不打折填1)</label>
+        <div class="layui-input-block">
+            <input type="number" min=0 max=1 name="discount" value='{$vo.discount|default=1}' required="required" title="请输入折扣" placeholder="请输入折扣" class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">有效期</label>
+        <div class="col-xs-5 form-inline" style="width:388px;padding:0 0 0 5px">
+            <div class="form-group">
+                <input type="text" name="time_long" pattern="^\d{1,9}$" value='{$vo.time_long|default=""}' required="required" title="请输入有效期" placeholder="请输入有效期" class="layui-input">
+            </div>
+            <div class="form-group">
+                <select name='time_type' style="display: block;" class='layui-select' id="module-list">
+                    {volist name='time_type' id='v'}
+                    <option value="{$key}" {if isset($vo.time_type) && ($vo.time_type==$key)}selected{/if}>{$v}</option>
+                    {/volist}
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">可使用次数</label>
+        <div class="layui-input-block">
+            <input type="number" min=0 name="times" pattern="^\d{1,9}$" value='{$vo.times|default=0}' required="required" title="请输入使用次数" placeholder="请输入使用次数" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">简述</label>
+        <div class="layui-input-block">
+            <textarea class="layui-textarea" name="short" >{$vo.short|default=""}</textarea>
+        </div>
+    </div>
+
+    <div class="hr-line-dashed"></div>
+
+    <div class="layui-form-item text-center">
+        {if isset($vo['id'])}<input type='hidden' value='{$vo.id}' name='id'/><input type="hidden" name="update_at" value="{:date('Y-m-d H:i:s')}">{/if}
+        <button class="layui-btn" type='submit'>保存数据</button>
+        <button class="layui-btn layui-btn-danger" type='button' data-confirm="确定要取消编辑吗？" data-close>取消编辑</button>
+    </div>
+</form>
+<script>
+    $('[name="img_path"]').change(function() {
+        $(this).parent('.uploadimage').css('background-image', this.value).css('backgroundImage', 'url(' + this.value + ')').css('background-repeat', 'no-repeat');
+    });
+</script>

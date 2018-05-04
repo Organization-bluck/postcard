@@ -1,0 +1,165 @@
+{extend name='extra@admin/content'}
+
+{block name="button"}
+
+<div class="nowrap pull-right" style="margin-top:10px">
+    <!--{if auth("$classuri/add")}-->
+    <!--<button data-modal='{:url("$classuri/add")}' data-title="添加" class='layui-btn layui-btn-small'><i-->
+            <!--class='fa fa-plus'></i> 添加-->
+    <!--</button>-->
+    <!--{/if}-->
+    {if auth("$classuri/del")}
+    <button data-update data-field='is_del' data-value='1' data-action='{:url("$classuri/del")}'
+            class='layui-btn layui-btn-small layui-btn-danger'><i class='fa fa-remove'></i> 删除
+    </button>
+    {/if}
+</div>
+{/block}
+
+{block name="content"}
+<!-- 表单搜索 开始 -->
+<form class="layui-form layui-form-pane form-search" action="__SELF__" onsubmit="return false" method="get">
+    <div class="layui-form-item layui-inline">
+        <label class="layui-form-label">订单号</label>
+        <div class="layui-input-inline">
+            <input name="order_sn" value="{$Think.get.order_sn|default=''}" placeholder="请输入订单号" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item layui-inline">
+        <label class="layui-form-label">真实姓名</label>
+        <div class="layui-input-inline">
+            <input name="nickname" value="{$Think.get.nickname|default=''}" placeholder="请输入真实姓名" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item layui-inline">
+        <label class="layui-form-label">联系电话</label>
+        <div class="layui-input-inline">
+            <input name="phone" value="{$Think.get.phone|default=''}" placeholder="请输入联系电话" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item layui-inline">
+        <select name="order_status" class="layui-select">
+            <option value='' >请选择订单状态</option>
+            {volist name='order_status' id='val' key='k'}
+            <option value="{$k}" {if $Think.get.order_status eq $k}selected{/if}>{$val}</option>
+            {/volist}
+        </select>
+    </div>
+
+    <div class="layui-form-item layui-inline">
+        <label class="layui-form-label">下单时间</label>
+        <div class="layui-input-inline">
+            <input name="create_at" id='create_at' value="{$Think.get.create_at|default=''}"
+                   placeholder="请选择下单时间" class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item layui-inline">
+        <label class="layui-form-label">支付时间</label>
+        <div class="layui-input-inline">
+            <input name="pay_time" id='pay_time' value="{$Think.get.pay_time|default=''}"
+                   placeholder="请选择支付时间" class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item layui-inline">
+        <button class="layui-btn layui-btn-primary"><i class="layui-icon">&#xe615;</i> 搜 索</button>
+    </div>
+</form>
+<!-- 表单搜索 结束 -->
+
+<form onsubmit="return false;" data-auto="" method="POST">
+    <table class="table table-hover" border="1">
+        <thead>
+        <tr>
+            <th class='list-table-check-td'>
+                <input data-none-auto="" data-check-target='.list-check-box' type='checkbox'/>
+            </th>
+            <th class='text-center'>订单号</th>
+            <th class='text-center'>真实姓名</th>
+            <th class='text-center'>联系电话</th>
+            <th class='text-center'>总次数</th>
+            <th class='text-center'>使用次数</th>
+            <th class='text-center'>会员卡名称</th>
+            <th class='text-center'>金额</th>
+            <th class='text-center'>实付金额</th>
+            <th class='text-center'>订单状态</th>
+            <th class='text-center'>创建时间</th>
+            <th class='text-center'>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        {foreach $list as $key=>$vo}
+        <tr>
+            <td rowspan="2" class='list-table-check-td'>
+                <input class="list-check-box" value='{$vo.id}' type='checkbox'/>
+            </td>
+            <td class='text-center'>{$vo.order_sn}</td>
+            <td class='text-center'>{$vo.nickname}</td>
+            <td class='text-center'>{$vo.phone}</td>
+            <td class='text-center'>{$vo.times}</td>
+            <td class='text-center'>{$vo.use_times}</td>
+            <td class='text-center'>{$vo.title}</td>
+            <td class='text-center'>{$vo.order_amount}</td>
+            <td class='text-center'>{$vo.pay_amount}</td>
+            <td class='text-center'>{$order_status[$vo.order_status]}</td>
+            <td class='text-center'>{$vo.create_at}</td>
+            <td rowspan="2" class='text-center nowrap'>
+                {if auth("$classuri/edit")}
+                <span class="text-explode">|</span>
+                <a data-modal='{:url("$classuri/edit")}?id={$vo.id}' href="javascript:void(0)">编辑</a><br/>
+                {/if}
+                {switch name="$vo.order_status" }
+                {case value="0"}
+                    {if auth("$classuri/pay_order")}
+                    <span class="text-explode">|</span>
+                    <a data-update="{$vo.id}" data-action='{:url("$classuri/pay_order")}'
+                       href="javascript:void(0)">支付订单</a><br/>
+                    {/if}
+                    {if auth("$classuri/cancel_order")}
+                    <span class="text-explode">|</span>
+                    <a data-update="{$vo.id}" data-action='{:url("$classuri/cancel_order")}'
+                       href="javascript:void(0)">取消订单</a><br/>
+                    {/if}
+                {/case}
+                {case value="1"}
+                    {if auth("$classuri/cancel_order")}
+                    <span class="text-explode">|</span>
+                    <a data-update="{$vo.id}" data-action='{:url("$classuri/cancel_order")}'
+                       href="javascript:void(0)">取消订单</a><br/>
+                    {/if}
+                {/case}
+                {case value="2"}
+                    <span class="text-explode">|</span>
+                    <a href="javascript:;">已取消</a><br/>
+                {/case}
+                {default /}不存在
+                {/switch}
+                {if auth("$classuri/del")}
+                <span class="text-explode">|</span>
+                <a data-update="{$vo.id}" data-field='is_del' data-value='1' data-action='{:url("$classuri/del")}'
+                   href="javascript:void(0)">删除</a>
+                {/if}
+            </td>
+        </tr>
+        <tr>
+            <th class='text-center'>有效时间</th>
+            <td colspan="2" class='text-center'>{$vo.valid_time}</td>
+            <th class='text-center'>支付时间</th>
+            <td colspan="2" class='text-center'>{$vo.pay_time}</td>
+            <th class='text-center'>支付方式</th>
+            <td class='text-center'>{$third_platform_type[$vo.third_platform_type]}</td>
+            <th class='text-center'>支付订单号</th>
+            <td class='text-center'>{$vo.third_platform_order_sn}</td>
+        </tr>
+        {/foreach}
+        </tbody>
+    </table>
+    {if isset($page)}<p>{$page}</p>{/if}
+</form>
+<script>
+    window.form.render();
+    window.laydate.render({range: true, elem: '#create_at', format: 'yyyy/MM/dd'});
+    window.laydate.render({range: true, elem: '#pay_time', format: 'yyyy/MM/dd'});
+</script>
+{/block}

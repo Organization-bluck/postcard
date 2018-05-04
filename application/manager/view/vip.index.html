@@ -1,0 +1,114 @@
+{extend name='extra@admin/content'}
+
+{block name="button"}
+
+<div class="nowrap pull-right" style="margin-top:10px">
+    {if auth("$classuri/add")}
+    <button data-modal='{:url("$classuri/add")}' data-title="添加" class='layui-btn layui-btn-small'><i
+            class='fa fa-plus'></i> 添加
+    </button>
+    {/if}
+    {if auth("$classuri/del")}
+    <button data-update data-field='is_del' data-value='1' data-action='{:url("$classuri/del")}'
+            class='layui-btn layui-btn-small layui-btn-danger'><i class='fa fa-remove'></i> 删除
+    </button>
+    {/if}
+</div>
+{/block}
+
+{block name="content"}
+<!-- 表单搜索 开始 -->
+<form class="layui-form layui-form-pane form-search" action="__SELF__" onsubmit="return false" method="get">
+    <div class="layui-form-item layui-inline">
+        <label class="layui-form-label">名称</label>
+        <div class="layui-input-inline">
+            <input name="title" value="{$Think.get.title|default=''}" placeholder="请输入vip卡名称" class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item layui-inline">
+        <button class="layui-btn layui-btn-primary"><i class="layui-icon">&#xe615;</i> 搜 索</button>
+    </div>
+</form>
+<!-- 表单搜索 结束 -->
+
+<form onsubmit="return false;" data-auto="" method="POST">
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th class='list-table-check-td'>
+                <input data-none-auto="" data-check-target='.list-check-box' type='checkbox'/>
+            </th>
+            <th class='text-center'>名称</th>
+            <th class='text-center'>背景图片</th>
+            <th class='text-center'>时长</th>
+            <th class='text-center'>次数</th>
+            <th class='text-center'>金额</th>
+            <th class='text-center'>折扣价</th>
+            <th class='text-center'>状态</th>
+            <th class='text-center'>创建时间</th>
+            <th class='text-center'>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        {foreach $list as $key=>$vo}
+        <tr>
+            <td class='list-table-check-td'>
+                <input class="list-check-box" value='{$vo.id}' type='checkbox'/>
+            </td>
+            <td class='text-center'>{$vo.title}</td>
+            <td class='text-center'><img src="{$vo.img_path}" class="img" alt="{$vo.title}" width="80" height="80"></td>
+            <td class='text-center'>{$vo.time_long}{$time_type[$vo.time_type]}</td>
+            <td class='text-center'>{$vo.times}</td>
+            <td class='text-center'>{$vo.price}</td>
+            <td class='text-center'>{$vo.price*$vo.discount}({if condition="$vo.discount egt 1"}原价{else /}{$vo.discount*10}折{/if})</td>
+            <td class='text-center'>
+                {if $vo.status eq 0}
+                <span style="color:#090">正常</span>
+                {elseif $vo.status eq 1}
+                <span>禁用</span>
+                {/if}
+            </td>
+            <td class='text-center'>{$vo.create_at}</td>
+            <td class='text-center nowrap'>
+                {if auth("$classuri/edit")}
+                <span class="text-explode">|</span>
+                <a data-modal='{:url("$classuri/edit")}?id={$vo.id}' href="javascript:void(0)">编辑</a>
+                {/if}
+                {if $vo.status eq 0}
+                    {if auth("$classuri/forbid")}
+                    <span class="text-explode">|</span>
+                    <a data-update="{$vo.id}" data-field='status' data-value='1' data-action='{:url("$classuri/forbid")}'
+                       href="javascript:void(0)">禁用</a>
+                    {/if}
+                {else /}
+                    {if auth("$classuri/resume")}
+                    <span class="text-explode">|</span>
+                    <a data-update="{$vo.id}" data-field='status' data-value='0' data-action='{:url("$classuri/resume")}'
+                       href="javascript:void(0)">启用</a>
+                    {/if}
+                {/if}
+                {if auth("$classuri/del")}
+                <span class="text-explode">|</span>
+                <a data-update="{$vo.id}" data-field='is_del' data-value='1' data-action='{:url("$classuri/del")}'
+                   href="javascript:void(0)">删除</a>
+                {/if}
+            </td>
+        </tr>
+        {/foreach}
+        </tbody>
+    </table>
+    {if isset($page)}<p>{$page}</p>{/if}
+</form>
+<script>
+    $('.img').on('click', function() {
+        layer.photos({
+            photos:{
+                "data":[{
+                    "src":$(this).attr('src'),
+                }]
+            }
+        });
+    });
+</script>
+{/block}

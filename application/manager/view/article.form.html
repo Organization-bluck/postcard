@@ -1,0 +1,58 @@
+<form class="layui-form layui-box" style='width:80%;height: 600px;padding:25px 30px 20px 0;' action="__SELF__" data-auto="true" method="post">
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">文章名称</label>
+        <div class="layui-input-block">
+            <input type="text" name="title" value='{$vo.title|default=""}' required="required" title="请输入标题" placeholder="请输入标题" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">图片</label>
+        <div class="layui-input-block">
+            <div style="position:relative">
+                {if isset($vo['img_path'])}
+                <div class="uploadimage" style='background-image:url("{$vo['img_path']}");background-repeat:no-repeat'><input type="hidden" name="img_path" value="{$vo['img_path']}"></div>
+            {else /}
+            <div class="uploadimage"><input type="hidden" name="img_path"></div>
+            {/if}
+            <a data-file="one" data-field="img_path" data-type="png,jpg,jpeg" data-uptype="local" href="javascript:void(0)" class="uploadbutton">上传图片</a>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">简述</label>
+        <div class="layui-input-block">
+            <textarea class="layui-textarea" name="short" >{$vo.short|default=""}</textarea>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">文章内容</label>
+        <div class="layui-input-block">
+            <textarea id="editor" name="content" >{$vo.content|default=""}</textarea>
+        </div>
+    </div>
+
+    <div class="hr-line-dashed"></div>
+
+    <div class="layui-form-item text-center">
+        {if isset($vo['id'])}<input type='hidden' value='{$vo.id}' name='id'/><input type="hidden" name="update_at" value="{:date('Y-m-d H:i:s')}">{/if}
+        <button class="layui-btn" type='submit'>保存数据</button>
+        <button class="layui-btn layui-btn-danger" type='button' data-confirm="确定要取消编辑吗？" data-close>取消编辑</button>
+    </div>
+</form>
+
+<script>
+    $(function() {
+        CKEDITOR.replace('editor', {
+            language:       'zh-cn', // 语言: 中文，默认是英文
+            allowedContent: true,
+            removePlugins:  'elementspath', // 编辑器下面不显示元素路径
+            resize_enabled: false, // 是否允许拖动改变编辑器的大小
+            height:         '300px' // CKEditor 中编辑区的高度，不算工具栏的高度
+        });
+    });
+
+    $('[name="img_path"]').change(function() {
+        $(this).parent('.uploadimage').css('background-image', this.value).css('backgroundImage', 'url(' + this.value + ')').css('background-repeat', 'no-repeat');
+    });
+
+</script>

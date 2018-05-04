@@ -1,0 +1,60 @@
+<!-- aside -->
+<aside class="ui-aside w40 bg-color-success f30">
+    <div class="user p3 color8 clearfix">
+        <div class="fl w10">
+            <img src="{$user_info.headimgurl}" class="w10 h10 radius-o" />
+        </div>
+        <div class="fr w22">
+            <span>{$user_info.nickname}</span><br />
+            <font class=" f28">{if condition="!empty($is_vip)"}<img src="__HOME_STATIC__/img/vip.png" height="20" width="20" alt="会员">{else/}<img src="__HOME_STATIC__/img/vip1.png" height="20" width="20" alt="会员">{/if}</font>
+        </div>
+    </div>
+    <ul class="f30 mt2">
+        <li>
+            <a href="{:url('index/index')}" class="pl3 color8">首页</a>
+        </li>
+        <li>
+            <a href="{:url('user/info')}" class="pl3 color8">我的信息</a>
+        </li>
+        <li>
+            <a href="{:url('user/order')}" class="pl3 color8">我的会员卡</a>
+        </li>
+        <li>
+            <a href="{:url('user/appoint')}" class="pl3 color8">我的预约</a>
+        </li>
+        <li>
+            <a href="{:url('user/message')}" class="pl3 color8">我的留言</a>
+        </li>
+    </ul>
+</aside>
+<style>
+    /*只针对侧栏内容部分做简单的样式*/
+
+    .ui-aside {
+        line-height: 1.5em;
+    }
+
+    .ui-aside ul {
+        border-top: 0.02rem solid #017da7;
+    }
+
+    .ui-aside li {
+        line-height: 0.8rem;
+        border-bottom: 0.02rem solid #017da7;
+    }
+
+    .ui-aside a {
+        display: block;
+    }
+</style>
+<script type="text/javascript">
+    var aside = $(".ui-aside").asideUi({
+        hasmask: true,
+        size: "4rem",
+        position: "left",
+        sidertime: 300
+    });
+    $(".ui-header-l").on('touchend', function() {
+        aside.toggle();
+    })
+</script>

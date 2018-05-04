@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	{include file="/common/top" /}
+	<script src="__HOME_STATIC__plugins/iscroll-probe.js"></script>
+	<style>
+		.article-info{margin-left: 3.2rem;}
+		.article-list li{box-shadow: 0 0 4px 0 #D5D9D8;}
+		.article-list li .pic img{width: 100%;height: 100%;}
+		#scrollbox {
+			position: fixed;
+			left: 0;
+			bottom: 0;
+			top: 0.8rem;
+			overflow: hidden;
+			width: 100%;padding: .2rem;
+			box-sizing: border-box;
+
+		}
+
+		.refresh,
+		.loading {
+			display: none;
+		}
+	</style>
+</head>
+
+<body class="fadeIn animated" style="padding-bottom: 1.2rem">
+{include file="/common/header" /}
+{include file="/common/left" /}
+<div id="scrollbox" class="color2 f30">
+	<div class="boxs">
+		<div class="refresh p1 t-c">
+			<img src="__HOME_STATIC__img/timg.gif" class="w6" />
+		</div>
+		<ul id="iscroll" class="article-list"></ul>
+		<div class="loading t-c p1">
+			<img src="__HOME_STATIC__img/timg.gif" class="w6" />
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+    $(function() {
+        var isPulled = false; //控制ajax的开关变量
+        var page = 1;
+        var buttonHeight = $(".loading").height();
+        myScroll = new IScroll('#scrollbox', {
+            probeType: 1,
+            tap: true,
+            click: false,
+            mouseWheel: true,
+            scrollbars: true,
+            fadeScrollbars: true,
+            interactiveScrollbars: false,
+            keyBindings: false,
+            deceleration: 0.0002
+        });
+
+        //监听方向
+        myScroll.on('scroll', function() {
+            if(this.y >= 60) {
+                $(".refresh").show();
+                myScroll.refresh();
+                isPulled = true;
+                page = 1;
+            }
+            if(this.maxScrollY - this.y >= 60) {
+                $(".loading").show();
+                myScroll.refresh();
+                isPulled = true;
+                page++;
+            }
+        });
+        //松手触发ajax
+        myScroll.on('scrollEnd', function() {
+            if(isPulled) {
+                isPulled = false;
+                getDate();
+            }
+        });
+        //ajax
+        function getDate() {
+            $.ajax({
+                url: "{:url('wap/index/getAjaxArticle')}",
+                type: 'get',
+                data: {page:page},
+                dataType: "json",
+                success: function(data) {
+                    $(".loading,.refresh").hide();
+                    if(page == 1) {
+                        $("#iscroll").html("");
+                    }
+                    var l = '';
+                    for(i = 0; i < data.data.length; i++) {
+						l += '<li class="mb2">';
+                        l += '		<a href="'+"{:url('wap/index/detail')}?id="+data.data[i].id+'&from=wechat&'+"{:time()}"+'" class="clearfix">';
+                        l += '			<div class="pic fl w30 h20"><img src="'+data.data[i].img_path+'" alt="'+data.data[i].title+'" width="100" height="80"></div>';
+                        l += '			<div class="article-info h20">';
+                        l += '				<h2 class="nowrap f38 pt1">'+data.data[i].title+'</h2>';
+                        l += '				<p class="nowrap info mt2">'+data.data[i].short+'</p>';
+                        l += '			</div>';
+                        l += '		</a>';
+                        l += '</li>';
+                    }
+                    $("#iscroll").append(l);
+                    myScroll.refresh();
+                },
+                error: function(XMLHttpRequest, textStatus, errorThrown) {
+                    console.log(XMLHttpRequest.status + "  " + XMLHttpRequest.readyState + "" + errorThrown);
+                }
+            });
+        }
+		getDate();
+        //阻止浏览器默认
+        document.addEventListener('touchmove', function(e) {
+            e.preventDefault();
+        }, false);
+    })
+</script>
+<!-- 底部导航 -->
+{include file="/common/footer" /}
+</body>
+</html>

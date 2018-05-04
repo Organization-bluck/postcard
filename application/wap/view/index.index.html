@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+		{include file="/common/top" /}
+	</head>
+	<body class="fadeIn animated" style="padding-bottom: 1.2rem">
+		{include file="/common/header" /}
+		{include file="/common/left" /}
+		<!-- swiper -->
+		<section class="swiper-container h40">
+			<div class="swiper-wrapper">
+				{if isset($data.banner_list)}
+					{volist name='data.banner_list' id='vo'}
+						<div class="swiper-slide"><img src='{$vo.img_path}' class="w75 h40" /></div>
+					{/volist}
+				{/if}
+			</div>
+			<!-- Add Arrows -->
+			<div class="swiper-button-next"></div>
+			<div class="swiper-button-prev"></div>
+			<!-- Add Pagination -->
+			<div class="swiper-pagination"></div>
+		</section>
+		<script>
+			var swiper = new Swiper('.swiper-container', {
+				navigation: {
+					nextEl: '.swiper-button-next',
+					prevEl: '.swiper-button-prev',
+				},
+				pagination: {
+					el: '.swiper-pagination',
+				}
+			});
+		</script>
+		<style>
+			.swiper-button-next,
+			.swiper-button-prev {
+				/*swiper 默认图标适应性较差，使用rem单位规定左右按钮大小，图标大小*/
+				width: 0.3rem !important;
+				height: 0.5rem !important;
+				background-size: cover !important;
+				margin-top: -0.23rem !important;
+			}
+		</style>
+		<style>
+			.title-box{margin: .2rem 0 .2rem .3rem;border-left: 4px solid #1c84c6;height: .36rem;position: relative;}
+			.title-box h2 {font-size: .32rem;color: #3B424C;line-height: .36rem;
+				padding-left: 4px;}
+			.article-info{margin-left: 3.2rem;}
+			.article-list li{box-shadow: 0 0 4px 0 #D5D9D8;}
+			.article-list li .pic img{width: 100%;height: 100%;}
+		</style>
+		<section class="demo-nav t-c f28 mb5 clearfix">
+			<div class="col-3 h19">
+				<a href="{:url('user/message')}" class="pt4 pb4">
+					<img src="__HOME_STATIC__img/zx.png" alt="" class="w10 h10">
+					<p>咨询</p>
+				</a>
+			</div>
+			<div class="col-3 h19">
+				<a href="{:url('index/service')}" class="pt4 pb4">
+					<img src="__HOME_STATIC__img/fw.png" alt="" class="w10 h10">
+					<p>服务</p>
+				</a>
+			</div>
+			<div class="col-3 h19">
+				<a href="{:url('index/knowledge')}" class="pt4 pb4">
+					<img src="__HOME_STATIC__img/zs.png" alt="" class="w10 h10">
+					<p>知识</p>
+				</a>
+			</div>
+			<div class="col-3 h19">
+				<a href="{:url('user/order')}" class="pt4 pb4">
+					<img src="__HOME_STATIC__img/hy.png" alt="" class="w10 h10">
+					<p>会员</p>
+				</a>
+			</div>
+		</section>
+		<div class="title-box">
+			<h2>推荐文章</h2>
+		</div>
+		<div class="article-list p2">
+			<ul>
+				{if isset($data.comment_list)}
+					{volist name='data.comment_list' id='vo'}
+					<li class="mb2">
+						<a href="{:url('index/detail', ['id' => $vo.id])}" class="clearfix">
+							<div class="pic fl w30 h20"><img src="{$vo.img_path}" alt="{$vo.title}"></div>
+							<div class="article-info h20">
+								<h2 class="nowrap f38 pt1">{$vo.title}</h2>
+								<p class="nowrap info mt2">
+									{$vo.short}
+								</p>
+							</div>
+						</a>
+					</li>
+					{/volist}
+				{/if}
+			</ul>
+		</div>
+		<style>
+			.demo-nav {
+				line-height: 1.8em;
+			}
+
+			.demo-nav a {
+				display: block;
+				width: 100%;
+				height: 100%;
+			}
+		</style>
+
+		<!-- 底部导航 -->
+		{include file="/common/footer" /}
+	</body>
+
+</html>
