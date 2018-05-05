@@ -116,7 +116,7 @@ class WechatScript extends Common
         );
         return array(
             "url"       => $url,
-            'debug'     => false,
+            'debug'     => 1,
             "appId"     => empty($appid) ? $this->appid : $appid,
             "nonceStr"  => $data['noncestr'],
             "timestamp" => $data['timestamp'],

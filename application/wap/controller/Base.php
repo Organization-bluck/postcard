@@ -23,9 +23,9 @@ class Base extends BasicWechat
     public function _initialize()
     {
         $this->max_upload_size = 10240*500; //上传最大500k
-        $this->openid = 'oYuInv1TBP_LiWP8ObF7b_G6wm10';
-
-//        parent::_initialize();
+//        $this->openid = 'oYuInv1TBP_LiWP8ObF7b_G6wm10';
+        $this->checkAuth = false;
+        parent::_initialize();
         $this->assign('is_vip', Db::table('manager_vip_order')->where(['valid_time' => ['gt', date('Y-m-d H:i:s')], 'is_del' => 0])->count());
         $this->assign('user_info', $this->fansinfo);
     }
