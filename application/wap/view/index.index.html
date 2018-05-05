@@ -75,11 +75,15 @@
                     $.ajax({
                         url: "{:url('index/uploadRecode')}",
                         type: 'post',
-                        data: JSON.stringify(res),
+                        data: res,
                         dataType: "json",
                         success: function (data) {
-                            alert('文件已经保存到七牛的服务器');//这回，我使用七牛存储
-                        },
+//                            alert('文件已经保存到七牛的服务器');//这回，我使用七牛存储
+                        	if(data.code == 1) {
+                        	    console.log('录音成功，资源地址如下');
+                        	    console.log(data.data);
+							}
+						},
                         error: function (xhr, errorType, error) {
                             console.log(error);
                         }
