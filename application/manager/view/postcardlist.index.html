@@ -1,0 +1,27 @@
+{extend name='extra@admin/content'}
+{block name="content"}
+
+<form onsubmit="return false;" data-auto="" method="POST">
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th class='text-center'>ID</th>
+            <th class='text-center'>获奖人</th>
+            <th class='text-center'>奖项名称</th>
+            <th class='text-center'>创建时间</th>
+        </tr>
+        </thead>
+        <tbody>
+        {foreach $list as $key=>$vo}
+        <tr>
+            <td class='text-center'>{$vo.id}</td>
+            <td class='text-center'>{$vo.nickname}</td>
+            <td class='text-center'>{$vo.name}</td>
+            <td class='text-center'>{$vo.create_at}</td>
+        </tr>
+        {/foreach}
+        </tbody>
+    </table>
+    {if isset($page)}<p>{$page}</p>{/if}
+</form>
+{/block}

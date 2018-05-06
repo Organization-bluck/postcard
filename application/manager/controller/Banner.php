@@ -19,15 +19,15 @@ class Banner extends BasicAdmin
      * 默认数据表
      * @var string
      */
-    public $table = 'manager_banner';
+    public $table = 'manager_luckdraw';
 
     /**
      * 列表
      */
     public function index()
     {
-        $this->title = '轮播图列表';
-        $db = Db::name($this->table)->order('sort asc, id desc');
+        $this->title = '抽奖列表';
+        $db = Db::name($this->table)->order('rank asc, id desc');
 
         return parent::_list($db);
     }
@@ -37,22 +37,22 @@ class Banner extends BasicAdmin
      */
     public function add()
     {
-        $this->title = '添加轮播图';
+        $this->title = '添加抽奖';
         return $this->_form($this->table, 'form');
     }
 
     /**
-     * 编辑轮播图
+     * 编辑抽奖
      * @return string
      */
     public function edit()
     {
-        $this->title = '编辑轮播图';
+        $this->title = '编辑抽奖';
         return $this->_form($this->table, 'form');
     }
 
     /**
-     * 轮播图禁用
+     * 抽奖禁用
      */
     public function forbid()
     {
@@ -63,7 +63,7 @@ class Banner extends BasicAdmin
     }
 
     /**
-     * 轮播图启用
+     * 抽奖启用
      */
     public function resume()
     {

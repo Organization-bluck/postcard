@@ -20,7 +20,9 @@
             <th class='list-table-check-td'>
                 <input data-none-auto="" data-check-target='.list-check-box' type='checkbox'/>
             </th>
+            <th class='text-center'>名称</th>
             <th class='text-center'>图片</th>
+            <th class='text-center'>剩余中奖人数</th>
             <th class='text-center'>排序(从小到大)</th>
             <th class='text-center'>状态</th>
             <th class='text-center'>创建时间</th>
@@ -33,8 +35,10 @@
             <td class='list-table-check-td'>
                 <input class="list-check-box" value='{$vo.id}' type='checkbox'/>
             </td>
-            <td class='text-center'><img src="{$vo.img_path}" width="100" height="100"></td>
-            <td class='text-center'>{$vo.sort}</td>
+            <td class='text-center'>{$vo.name}</td>
+            <td class='text-center'><img src="{$vo.image}" width="100" height="100"></td>
+            <td class='text-center'>{$vo.percent}</td>
+            <td class='text-center'>{$vo.rank}</td>
             <td class='text-center'>
                 {if $vo.status eq 0}
                 <span style="color:#090">已启用</span>
