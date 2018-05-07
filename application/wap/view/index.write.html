@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	{include file="/common/top" /}
+</head>
+<body>
+<div class="wrap">
+	<div class="container clearfix">
+		<textarea name="" id="textarea" placeholder="#给您最在乎的人说出你的心里话...#" ></textarea>
+		<ul class="text-list">
+			<li>
+				<input type="radio" id="text1" name="text">
+				<label for="text1">生活就像一块巧克力，生活就像一块巧克力，生活就像一块巧克力，生活就像一块巧克力，生活就像一块巧克力</label>
+			</li>
+			<li>
+				<input type="radio" id="text2" name="text">
+				<label for="text2">生活就像一块巧克力，生活就像一块巧克力，生活就像一块巧克力，生活就像一块巧克力，生活就像一块巧克力1</label>
+			</li>
+			<li>
+				<input type="radio" id="text3" name="text">
+				<label for="text3">生活就像一块巧克力，生活就像一块巧克力，生活就像一块巧克力，生活就像一块巧克力，生活就像一块巧克力</label>
+			</li>
+			<li>
+				<input type="radio" id="text4" name="text">
+				<label for="text4">生活就像一块巧克力，生活就像一块巧克力，生活就像一块巧克力，生活就像一块巧克力，生活就像一块巧克力</label>
+			</li>
+		</ul>
+	</div>
+	<div class="footer ">
+		<div class="btn-group">
+			<div class="start-btn go_href">查看效果</div>
+		</div>
+	</div>
+</div>
+<script src="__HOME_STATIC__js/jquery.1.10.1.min.js"></script>
+<script>
+    $(function(){
+        $(".text-list li").click(function(){
+            $('#textarea').val($(this).find('label').html())
+
+        });
+
+        $('.go_href').click(function() {
+            window.location.href="{:url('index/luckdraw')}";
+		});
+    })
+</script>
+</body>
+</html>

@@ -13,7 +13,8 @@ input{font-family: "微软雅黑";}
 .fl{float: left;}
 .fr{float: right;}
 .hide{display: none;}
-::-webkit-input-placeholder { /* WebKit browsers */ color: #f3576e;}:-moz-placeholder { /* Mozilla Firefox 4 to 18 */ color: #f3576e;}::-moz-placeholder { /* Mozilla Firefox 19+ */ color: #f3576e;}:-ms-input-placeholder { /* Internet Explorer 10+ */ color: #f3576e;}
+::-webkit-input-placeholder { /* WebKit browsers */ color: #ccc;}:-moz-placeholder { /* Mozilla Firefox 4 to 18 */ color: #ccc;}::-moz-placeholder { /* Mozilla Firefox 19+ */ color: #ccc;}:-ms-input-placeholder { /* Internet Explorer 10+ */ color: #ccc;}
+
 /*clearfix*/
 .clearfix:before,
 .clearfix:after {
@@ -33,12 +34,35 @@ input{font-family: "微软雅黑";}
 .wrap .header .tabs{height: .6rem;line-height: .6rem;font-size: .28rem;background-color: #f3f3f3;color: #333;border-bottom: 1px solid #ccc;}
 .wrap .header .tabs .tab-item{ float: left;width: 50%;height: .6rem;line-height: .6rem;text-align: center;}
 .wrap .header .tabs .tab-item.active{border-bottom: 2px solid #3879d9;}
-.wrap .container{width: 100%;overflow: hidden;flex: 1;}
-.wrap .container img{width: 100%;height: 100%;}
-.wrap .footer{background-color: #f3f3f3;padding: .2rem 0;}
+.wrap .container{width: 100%;overflow: hidden;flex: 1;position: relative;}
+.wrap .container img.bg{width: 100%;height: 100%;}
+.wrap .container .info{font-size: .32rem;width: 60%;margin: auto;position: absolute;top: 40%;left: 50%;margin-left: -30%;color: #333;}
+.wrap .footer{background-color: #f3f3f3;padding: .2rem 0;width: 100%;box-sizing: border-box;position: absolute;bottom: 0;left: 0;}
 .wrap .footer .start-btn{width: 90%;height:.6rem;line-height: .6rem;background-color: #3879d9;border-radius: 2px;text-align: center;font-size: .3rem;margin: auto;color: #fff; }
 
 /*编辑*/
+.mode-box{width: 100%; padding: .2rem;box-sizing: border-box;}
+.mode-box .mode{float: left;width: 2.9rem;height: 3rem;margin-bottom: .1rem;border: 2px solid #fff;box-sizing: border-box;}
+.mode-box .mode.active{border:2px solid #3879d9;}
+.mode-box .mode:nth-child(odd){margin-right: .2rem;}
+.mode-box .mode img{width: 100%;height: 100%;}
+.upload-box{width: 100%;height: 100%; position: relative;}
+.upload-box .upload{width: 2.1rem;height: 2.1rem;border:1px dashed #999;border-radius: 5px;font-size: 1.8rem;color: #9c9c9c;text-align: center;margin: .2rem auto;}
+.upload-box .upload input[type="file"]{position: absolute;left: 0;top: 0;width: 100%;height: 100%;opacity: 0;}
+.upload-box p{font-size: .28rem;color: #9c9c9c;}
 
+.footer .btn-group{display: flex;padding: 0 .3rem;font-size: .32rem;}
+.footer .recording{width: 4.9rem;height: .6rem;line-height: .6rem;color: #ccc;background-color: #3879d9;border-radius: 30px;text-align: center;margin-right: .2rem;font-size: .28rem;}
+.footer .next-btn{width: 1.4rem;height: .6rem;line-height: .6rem;background-color: #ccc;color: #fff;text-align: center;border-radius: 5px;font-size:.28rem; }
+ 
+ /*编辑录音*/
+.post-card {width: 5.16rem;height: 8rem;padding: .2rem;background-color: #e6e6e6;margin: .5rem auto;}
+.post-card img{width: 100%;height: 100%;}
+.edit-info .text{font-size: .28rem;text-align: center;}
 
+ /*编辑文字*/
+ .container textarea{display: block; width: 80%;height: 1.6rem; margin: .5rem auto .3rem;border: 1px solid #ccc;resize: none;font-size: .24rem;padding: .2rem;color: #666;}
 
+.text-list li{padding:.2rem 0;position: relative;border-bottom: 1px solid #b5b5b5;margin-left: 10%;font-size: .28rem;line-height: 1.6}
+.text-list li:first-child{border-top:1px solid #b5b5b5;}
+.text-list li input{position: absolute;left: -10%;top: 40%;width: .3rem;height: .3rem;}

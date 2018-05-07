@@ -14,6 +14,21 @@ class Index extends Base
         return view();
     }
 
+    public function choose()
+    {
+        return view();
+    }
+
+    public function recode()
+    {
+        return view();
+    }
+
+    public function write()
+    {
+        return view();
+    }
+
     public function luckdraw()
     {
         //奖项

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	{include file="/common/top" /}
+</head>
+<body>
+<div class="wrap">
+	<div class="container mode-box clearfix">
+		<div class="mode active">
+			<img src="__HOME_STATIC__images/bg.jpg" alt="">
+		</div>
+		<div class="mode">
+			<img src="__HOME_STATIC__images/bg.jpg" alt="">
+		</div>
+		<div class="mode">
+			<img src="__HOME_STATIC__images/bg.jpg" alt="">
+		</div>
+		<div class="mode">
+			<img src="__HOME_STATIC__images/bg.jpg" alt="">
+		</div>
+		<div class="mode">
+			<img src="__HOME_STATIC__images/bg.jpg" alt="">
+		</div>
+		<div class="mode">
+			<div class="upload-box">
+				<div class="upload">
+					<input type="file">
+					+
+				</div>
+				<p>选择自己的一张照片吧</p>
+			</div>
+		</div>
+	</div>
+	<div class="footer ">
+		<div class="btn-group">
+			<div class="recording">按住录音</div>
+			<a href="{:url('index/recode')}"><div class="next-btn">下一步</div></a>
+		</div>
+	</div>
+</div>
+<script src="__HOME_STATIC__js/jquery.1.10.1.min.js"></script>
+<script>
+    $(function(){
+        $('.mode').not(':last').click(function(){
+            if($(this).hasClass('active')){
+                return
+            }else{
+                $(this).addClass('active').siblings().removeClass('active')
+            }
+        })
+    })
+</script>
+</body>
+</html>
