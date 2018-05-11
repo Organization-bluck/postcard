@@ -1,54 +1,99 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	{include file="/common/top" /}
+    {include file="/common/top" /}
 </head>
 <body>
 <div class="wrap">
-	<div class="container mode-box clearfix">
-		<div class="mode active">
-			<img src="__HOME_STATIC__images/bg.jpg" alt="">
-		</div>
-		<div class="mode">
-			<img src="__HOME_STATIC__images/bg.jpg" alt="">
-		</div>
-		<div class="mode">
-			<img src="__HOME_STATIC__images/bg.jpg" alt="">
-		</div>
-		<div class="mode">
-			<img src="__HOME_STATIC__images/bg.jpg" alt="">
-		</div>
-		<div class="mode">
-			<img src="__HOME_STATIC__images/bg.jpg" alt="">
-		</div>
-		<div class="mode">
-			<div class="upload-box">
-				<div class="upload">
-					<input type="file">
-					+
-				</div>
-				<p>选择自己的一张照片吧</p>
-			</div>
-		</div>
-	</div>
-	<div class="footer ">
-		<div class="btn-group">
-			<div class="recording">按住录音</div>
-			<a href="{:url('index/recode')}"><div class="next-btn">下一步</div></a>
-		</div>
-	</div>
+    <div class="mode-box container clearfix">
+        <div class="mode active" data-imgurl="__HOME_STATIC__images/bg1.png">
+            <img src="__HOME_STATIC__images/bg1.png" alt="">
+        </div>
+        <div class="mode" data-imgurl="__HOME_STATIC__images/bg2.png">
+            <img src="__HOME_STATIC__images/bg2.png" alt="">
+        </div>
+        <div class="mode" data-imgurl="__HOME_STATIC__images/bg1.jpg">
+            <img src="__HOME_STATIC__images/bg.jpg" alt="">
+        </div>
+        <div class="mode" data-imgurl="__HOME_STATIC__images/bg2.jpg">
+            <img src="__HOME_STATIC__images/bg.jpg" alt="">
+        </div>
+        <div class="mode" data-imgurl="__HOME_STATIC__images/bg.jpg">
+            <img src="__HOME_STATIC__images/bg.jpg" alt="">
+        </div>
+
+        <div class="mode mode_demo">
+            <form id="sub_img">
+                <div class="upload-box">
+                    <div class="upload">
+                        <input type="file" name="file" onchange="selectImage();"
+                               accept="image/png, image/jpeg, image/gif, image/jpg" id="FileUpload">
+                        +
+                    </div>
+                    <p>选择自己的一张照片吧</p>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="footer">
+        <div class="btn-group">
+            <div class="next-btn">下一步</div>
+        </div>
+    </div>
 </div>
 <script src="__HOME_STATIC__js/jquery.1.10.1.min.js"></script>
 <script>
-    $(function(){
-        $('.mode').not(':last').click(function(){
-            if($(this).hasClass('active')){
-                return
-            }else{
+    $(function () {
+        // 设置屏幕高度
+        $('.wrap').height($(window).height())
+        // 选择模板照片
+        $('.mode').not(':last').click(function (e) {
+            if (!$(this).hasClass('active')) {
                 $(this).addClass('active').siblings().removeClass('active')
             }
         })
-    })
+
+        $('.next-btn').click(function () {
+            var img = $('.active').data('imgurl');
+            if (!img) {
+                alert('请选择图片');
+                return false;
+            }
+            $.post("{:url('index/uploadImg')}", {img_path: img}, function (data) {
+                if (data.code == 1) {
+                    window.location.href = "{:url('index/recode')}?id=" + data.data;
+                } else {
+                    alert('请重新选择图片');
+                }
+            }, 'json');
+        })
+    });
+    // 用户自己选择图片
+    var image = '';
+
+    function selectImage() {
+        var form = new FormData(document.getElementById('sub_img'));
+
+        $.ajax({
+            url:"{:url('index/uploadImg')}",
+            type:"post",
+            data:form,
+            processData:false,
+            contentType:false,
+            success:function(data){
+                console.log("over..");
+            },
+            error:function(e){
+                alert("错误！！");
+                window.clearInterval(timer);
+            }
+        });
+//        $.post("{:url('index/uploadImg')}", {img: image}, function (data) {
+//            if (data.code == 1) {
+//                window.location.href = "{:url('index/recode')}?id=" + data.data;
+//            }
+//        });
+    }
 </script>
 </body>
 </html>

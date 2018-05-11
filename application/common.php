@@ -218,6 +218,43 @@ function getRealIp()
     return ($ip ? $ip : $_SERVER['REMOTE_ADDR']);
 }
 
+/**
+ * 画布 文字转行
+ * @param $str          string  字符创
+ * @param $fontFamily   string  字体文件
+ * @param $fontSize     int     字号大小
+ * @param $charset      string  文字格式
+ * @param $width        int     文字宽度
+ * @return array
+ */
+function autoLineSplit ($str, $fontFamily, $fontSize, $charset, $width) {
+    $result = [];
+
+    $len = (strlen($str) + mb_strlen($str, $charset)) / 2;
+
+    // 计算总占宽
+    $dimensions = imagettfbbox($fontSize, 0, $fontFamily, $str);
+    $textWidth = abs($dimensions[4] - $dimensions[0]);
+
+    // 计算每个字符的长度
+    $singleW = $textWidth / $len;
+    // 计算每行最多容纳多少个字符
+    $maxCount = floor($width / $singleW);
+
+    while ($len > $maxCount) {
+        // 成功取得一行
+        $result[] = mb_strimwidth($str, 0, $maxCount, '', $charset);
+        // 移除上一行的字符
+        $str = str_replace($result[count($result) - 1], '', $str);
+        // 重新计算长度
+        $len = (strlen($str) + mb_strlen($str, $charset)) / 2;
+    }
+    // 最后一行在循环结束时执行
+    $result[] = $str;
+
+    return $result;
+}
+
 
 /**
  * array_column 函数兼容

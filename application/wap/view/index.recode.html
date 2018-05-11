@@ -5,41 +5,48 @@
 </head>
 <body>
 <div class="wrap">
+    <audio src="http://www.w3school.com.cn/i/song.mp3" id="audio"></audio>
 	<div class="container edit-card clearfix">
 		<div class="post-card">
-			<img src="__HOME_STATIC__images/bg.jpg" alt="">
+			<img src="{$img_path}" alt="我的明信片">
 		</div>
 		<div class="edit-info">
 			<div class="text">
 				<p>把你想说的话录进这张明信片吧</p>
 			</div>
+            <div class="recoding-info">
+                <img src="__HOME_STATIC__images/play.gif" alt="" class="recoding-img">
+            </div>
+            <div class="recode-list">
+                <img src="__HOME_STATIC__images/arrow.png" alt="" class="avatar">
+                <img src="__HOME_STATIC__images/btn-back.png" alt="" class="video-msg">
+                <span class="video-info">删除</span>
+                <div class="duration">3'</div>
+            </div>
 		</div>
 	</div>
 	<div class="footer ">
 		<div class="btn-group">
-			<div class="recording start_record">按住录音</div>
-			<a href="{:url('index/write')}"><div class="next-btn">下一步</div></a>
+			<input type="hidden" name="id" value="{$id}">
+			<div class="recording start_record canpress"><i class="icon-record"></i>按住录音</div>
+			<a href="{:url('index/write')}?id={$id}" class="next-btn">下一步</a>
 		</div>
 	</div>
 </div>
 <script src="__HOME_STATIC__js/jquery.1.10.1.min.js"></script>
 <script>
     $(function(){
-        $('.mode').not(':last').click(function(){
-            if($(this).hasClass('active')){
-                return
-            }else{
-                $(this).addClass('active').siblings().removeClass('active')
-            }
-        });
+        $('.wrap').height($(window).height())
 
-
-        var voice_id;
         //按下开始录音
-        $('.start_record').on('touchstart', function(event){
+        $('.start_record').on('touchstart',touchstart );
+        function touchstart(event){
             event.preventDefault();
             START = new Date().getTime();
 
+            // 按下录音图标出现
+            $('.edit-info .text').hide();
+            $('.edit-info .recoding-info').show()
             recordTimer = setTimeout(function(){
                 wx.startRecord({
                     success: function(){
@@ -50,49 +57,63 @@
                     }
                 });
             },300);
-        });
+        }
         //松手结束录音
-        $('.start_record').on('touchend', function(event){
+        $('.start_record').on('touchend',touchend );
+        function touchend(event){
             event.preventDefault();
             END = new Date().getTime();
-
+            // 松手录音图标消失
+            $('.edit-info .text').hide();
+            $('.edit-info .recoding-info').show()
             if((END - START) < 300){
                 END = 0;
                 START = 0;
                 //小于300ms，不录音
                 clearTimeout(recordTimer);
+                // 松手没录音
+                $('.edit-info .text').show();
+                $('.edit-info .recoding-info').hide()
             }else{
                 wx.stopRecord({
                     success: function (res) {
-                        voice_id = res.localId;
-                        uploadVoice();
+
+                        //录音完成，出现音频
+                        $('.edit-info .recoding-info').hide();
+                        $('.recode-list').show();
+                        //录音按钮变灰色
+                        $('.start_record').removeClass('canpress')
+                        $('.start_record').off('touchstart').off('touchend')
+                        var voice_id = res.localId;
+                        uploadVoice(voice_id);
                     },
                     fail: function (res) {
-                        alert(JSON.stringify(res));
+                        // alert(JSON.stringify(res));
                     }
                 });
             }
-        });
+        }
 
         //上传录音
-        function uploadVoice(){
+        function uploadVoice(voiceId){
             //调用微信的上传录音接口把本地录音先上传到微信的服务器
             //不过，微信只保留3天，而我们需要长期保存，我们需要把资源从微信服务器下载到自己的服务器
             wx.uploadVoice({
-                localId: voice_id, // 需要上传的音频的本地ID，由stopRecord接口获得
+                localId: voiceId, // 需要上传的音频的本地ID，由stopRecord接口获得
                 isShowProgressTips: 1, // 默认为1，显示进度提示
                 success: function (res) {
                     //把录音在微信服务器上的id（res.serverId）发送到自己的服务器供下载。
                     $.ajax({
                         url: "{:url('index/uploadRecode')}",
                         type: 'post',
-                        data: res,
+                        data: {serverId:res.serverId, id:$('input[name=id]').val()},
                         dataType: "json",
                         success: function (data) {
-//                            alert('文件已经保存到七牛的服务器');//这回，我使用七牛存储
+                            //alert('文件已经保存到七牛的服务器');//这回，我使用七牛存储
                             if(data.code == 1) {
-                                alert('录音上传成功');
                                 console.log(data.data);
+                                // 将音频设置到audio 中
+                                $('#audio').attr('src',data.data);
                             }
                         },
                         error: function (xhr, errorType, error) {
@@ -109,6 +130,21 @@
                 stopWave();
             }
         });
+
+        // 录制的音频播放
+        $('.video-msg').click(function(){
+            var audio = document.getElementById('audio');
+            audio.play();
+        })
+        // 删除音频
+        $('.video-info').click(function(){
+            $('#audio').attr('src','');
+            $('.recode-list').hide()
+            $('.edit-info .text').show();
+            $('.start_record').addClass('canpress');
+            $('.start_record').on('touchstart',touchstart).on('touchend',touchend)
+        })
+        
     })
 </script>
 </body>

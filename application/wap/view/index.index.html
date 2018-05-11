@@ -12,7 +12,7 @@
 		</div>
 	</div>
 	<div class="container">
-		<img src="__HOME_STATIC__images/bg.jpg" alt="明星片">
+		<img src="__HOME_STATIC__images/bg.jpg" alt="明星片" class="bg">
 	</div>
 	<div class="footer">
 		<a href="{:url('index/choose')}"><div class="start-btn">开始制作</div></a>
@@ -21,7 +21,9 @@
 <script src="__HOME_STATIC__js/jquery.1.10.1.min.js"></script>
 <script>
     $(function(){
-        document.getElementsByClassName('wrap')[0].style.height = window.outerHeight+'px';
+
+		var postcard_list = {$postcard_list};
+      $('.wrap').height($(window).height())
     })
 </script>
 </body>

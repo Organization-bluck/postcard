@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	{include file="/common/top" /}
+</head>
+<body>
+<div class="wrap">
+	<div class="container clearfix">
+		<div class="mask-bg"></div>
+		<div class="flex-box">
+			<div class="tabs-group">
+				<span class="font-btn active">正面</span> | <span class="back-btn">背面</span>
+			</div>
+			<div class="postcard-img">
+				<div class="card">
+					<img src="{$info.img_path}" alt="" class="card-font">
+					<img src="{$info.card_path}" alt="" class="card-back">
+				</div>
+			</div>
+			<div class="audio-box">
+				<span class="icon-audio"></span>
+				<audio src="{$info.file_url}" controls></audio>
+				<span>00:25</span>
+			</div>
+			
+			<div class="tool-footer">
+				<div class="edit-btn">
+					<i class="icon-edit"></i>
+					编辑明信片
+				</div>
+				<div class="share-btn">
+					<i class="icon-share"></i>
+					分享明信片
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+</div>
+<script src="__HOME_STATIC__js/jquery.1.10.1.min.js"></script>
+<script>
+    $(function(){
+    		$('.wrap').height($(window).height())
+
+    		$('.back-btn').click(function(){
+    			if(!$(this).hasClass('active')){
+    				$(this).addClass('active').siblings().removeClass('active');
+    				$('.card').find('.card-font').stop().animate({'width':0},100,function(){
+        			$(this).hide().next().show();
+        			$(this).next().animate({'width':'100%'},100);
+        		});
+    			}
+    		})
+
+    		$('.font-btn').click(function(){
+    			if(!$(this).hasClass('active')){
+    				$(this).addClass('active').siblings().removeClass('active');
+    				$('.card').find('.card-back').stop().animate({'width':0},100,function(){
+        			$(this).hide().prev().show();
+        			$(this).prev().animate({'width':'100%'},100);
+        		});
+    			}
+    		})
+    })
+</script>
+</body>
+</html>
